@@ -4,7 +4,7 @@
 
 | Topic                                                                                | Description                                        | Final PKT File                                                                 |
 |--------------------------------------------------------------------------------------|----------------------------------------------------|--------------------------------------------------------------------------------|
-| [Router OSPF configuration](./cisco-packet-tracer/ospf-single-area-configuration.md) | OSPF configuration for simple single-area networks | -                                                                              |
+| [Router OSPF configuration](modules/ospf-single-area-configuration.md) | OSPF configuration for simple single-area networks | -                                                                              |
 ### IP Addressing Cheat Sheets
 
 | Topic                                                                                                                                                           | Description                                                      |
