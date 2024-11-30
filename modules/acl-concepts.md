@@ -76,10 +76,12 @@ to the destination as possible, to ensure maximum efficiency and good performanc
 
 **Named ACLs** are more flexible and easier to manage. They can be edited without changing the sequence number, and can be applied to
 specific interfaces. They are also more descriptive and easier to understand. The `ip access-list` command is used to create named ACLs.
+
 ![img.png](../images/named_acl.png)
 
+---
 
-## Configuring ACLs on Cisco routers
+## Configuring standard ACLs on Cisco routers
 
 ### Syntax for numbered standard IPv4 ACL:
 
@@ -108,6 +110,7 @@ If we then wanted to remove it, we would use the `no` keyword in front of the co
 > ![img_2.png](../images/sample_acl_3.png)
 
 > **To debug, it is possible to use the output of show run command to see the configuration of the router.**
+> 
 > ![img.png](../images/sample_acl_4.png)
 
 
@@ -132,13 +135,15 @@ If we then wanted to remove it, we would use the `no` keyword in front of the co
 As ACLs with many ACEs can get quite overwhelming, there are 2 main methods of modifying ACLs that try to minimize error and
 make the process as easy as possible.
 
-### Text editor method
+**Text editor method**
+
 - First, fetch the current configuration with `show run | section access-list` from the enable mode of target router.
 - Copy the contents to a text editor, edit it as needed.
 - Remove the current ACL configuration on the router.
 - Paste in new configuration into the router from your text editor.
 
-### Sequence number method
+**Sequence number method**
+
 - Start by printing out the current configuration.
 > Sample output, there is a mistake in ACE 10 - it should say 192 instead of 19.
 > 
@@ -152,7 +157,7 @@ make the process as easy as possible.
 > ![img.png](../images/sample_acl_7.png)
 
 
-## Securing VTY ports with ACL
+### Securing VTY ports with ACL
 
 ACLs can be used to secure VTY ports on a router. This can be useful to prevent unauthorized access to the router.
 To make it happen, we can use the `access-class` command in line configuration mode.
@@ -163,3 +168,72 @@ Please, note that telnet is just for purposes of demonstration, in production en
 We would use `transport input ssh` command to enable SSH on the VTY lines.
 
 We can verify the configuration using `show access-lists` command.
+
+---
+
+## Creating extended ACLs
+
+Extended ACLs can filter traffic based on more metrics than standard ACLs.
+
+### Numbered extended IPv4 ACLs
+
+```Router(config)# access-list access-list-number {deny | permit | remark text} protocol source source-wildcard [operator {port}] destination destination-wildcard [operator {port}] [established] [log]```
+
+> `access-list-number` - Number of the ACL (100-199, 2000-2699).
+> 
+> `deny | permit` - Action to be taken if the packet matches the criteria.
+> 
+> `protocol` - Protocol to be matched (TCP, UDP, ICMP, etc.).
+> 
+> `source` - Source IP address.
+> 
+> `source-wildcard` - Wildcard mask for the source IP address.
+> 
+> `operator` - Operator to be used for port matching (eq, gt, lt, neq, range).
+> 
+> `port` - Port number to be matched.
+> 
+> `destination` - Destination IP address.
+> 
+> `destination-wildcard` - Wildcard mask for the destination IP address.
+> 
+> `established` - Matches only established connections.
+> 
+> `log` - Logs the packet if it matches the criteria.
+
+> It is not necessary to remember numbers assigned to each protocol, it is possible to list them using `?`:
+> 
+> ![img.png](../images/aacl.png)
+> 
+> This also works for port numbers: 
+> 
+> ![img.png](../images/aacl2.png)
+
+
+**Example of a numbered extended ACL:**
+
+- `access-list 100 permit tcp any eq www` or `access-list 100 permit tcp any eq 80`
+
+> Example of ACL regulating web traffic: 
+> 
+>![img.png](../images/aacl3.png)
+
+
+**Established keyword**
+
+The `established` keyword is used to match only established connections. It is used to allow return traffic from a connection
+initiated from the inside network. It blocks the requests to establish connection from the outside network.
+
+![img.png](../images/acl-established.png)
+
+> Example usage:
+> 
+> ![img.png](../images/aacl4.png)
+
+### Named extended IPv4 ACLs
+
+Similar to standard ACLs, named extended can be created using the `ip access-list extended access-list-name` command.
+
+> **Example of a named extended ACL:**
+> 
+> ![img.png](../images/aacl5.png)

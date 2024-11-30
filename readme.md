@@ -1,10 +1,15 @@
 ## Tutorials repository for Delta Computer Networks 4 course
 
-### Packet Tracer
+### CCNA ENSA Topics
 
-| Topic                                                                                | Description                                        | Final PKT File                                                                 |
-|--------------------------------------------------------------------------------------|----------------------------------------------------|--------------------------------------------------------------------------------|
-| [Router OSPF configuration](modules/ospf-single-area-configuration.md) | OSPF configuration for simple single-area networks | -                                                                              |
+| Topic                                                                  | Description                                                |
+|------------------------------------------------------------------------|------------------------------------------------------------|
+| [Router OSPF configuration](modules/ospf-single-area-configuration.md) | OSPF configuration for simple single-area networks         | -                                                 |
+| [Network security concepts](modules/network-security-concepts.md)      | Common security terms, vectors of data loss, threat actors |
+| [ACL Concepts](modules/acl-concepts.md)                                | Access Control Lists (ACLs)                                |
+| [NAT](modules/nat.md)                                                  | Network Address Translation (NAT)                          |
+
+
 ### IP Addressing Cheat Sheets
 
 | Topic                                                                                                                                                           | Description                                                      |
