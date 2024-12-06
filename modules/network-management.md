@@ -62,6 +62,8 @@ To verify the current time configuration, use the `show clock detail` command.
 
 NTP can be configured with the `ntp server ntp-server-ip` command in global configuration mode. To verify the NTP configuration, use the `show ntp associations`.
 
+To declare current device as an authoritative NTP server, use the `ntp master stratum-level` command in global configuration mode.
+
 Details about the NTP configuration can be displayed with the `show ntp status` command.
 
 
@@ -188,3 +190,69 @@ Here is an example of forcing log to display time and date of logged events.
 
 ![img.png](../images/syslog-configuration.png)
 
+
+## Cisco Router and Switch Maintenance
+
+### Router file systems
+
+Cisco IOS uses IFS (IOS File System) that allows the administrator to navigate the file system and manage files.
+
+To display the basic info about it, such as total and free memory, file system type and permissions,
+use the `show file systems` command.
+
+To display the contents of the file system, use the `dir` command.
+
+To view nvram contents, it is first necessary to change the directory to nvram, using the `cd nvram:` command. You can 
+view your present working directory using the `pwd` command.
+
+> ![img.png](../images/nvram-dir-output.png)
+
+### Configuration backup
+
+It is possible to use TFTP (Trivial File Transfer Protocol) to back up the configuration of the device.
+
+To do so, use the `copy running-config tftp` command. You will be prompted to enter the IP address of the TFTP server
+and the name of the file to save the configuration to. It is also possible to copy the startup configuration to the TFTP server
+using the `copy startup-config tftp` command.
+
+To restore the configuration, use the `copy tftp running-config` command.
+
+![img.png](../images/tftp-backup.png)
+
+
+### USB ports on Cisco devices 
+
+Connect your USB to the device. List out available locations using the `show file systems` command.
+
+You should be able to see and cd into the USB using the `cd usbflash0:` command. It is then possible to copy files to and
+from the USB (`copy running-config usbflash0:`...).
+
+It is also possible to use `more` command to preview the contents of the file.
+
+![img.png](../images/more-output.png)
+
+
+### Password recovery procedure
+
+- Enter the ROMMON mode by restarting the device and pressing `Ctrl + Break` during the boot process. When successful, you should
+see the `rommon 1>` prompt.
+- Change the configuration register value to ignore the startup configuration by using the `confreg 0x2142` command.
+- Restart the device using the `reset` command.
+- Enter the privileged exec mode by using the `enable` command.
+- Copy the startup configuration to the running configuration using the `copy startup-config running-config` command. This will
+erase the original configuration.
+- Change the password using the `configure terminal` and `enable secret your-password` commands.
+- Change the configuration register value back to the original value using the `confreg 0x2102` command.
+- Save the new configuration using the `copy running-config startup-config` command.
+- Restart the device using the `reload` command.
+
+
+### IOS image management
+
+TFTP servers are a recommended IOS image backup and upgrade storage solution. To copy the IOS image to the TFTP server, use the
+`copy flash: tftp:` command. To copy the IOS image from the TFTP server to the device, use the `copy tftp: flash:` command.
+
+To upgrade the IOS image, use the `boot system flash:filename` command in global configuration mode. To verify the current IOS image,
+use the `show version` command.
+
+![img.png](../images/cisco-ios-upgrade.png)
